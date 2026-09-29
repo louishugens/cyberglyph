@@ -1,9 +1,11 @@
 "use client";
 
 import { useId, useMemo, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, LayoutGroup, motion, useReducedMotion } from "motion/react";
 import { CheckCircle, WarningCircle, XCircle } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
+import { SplitReveal } from "@/components/motion/split-reveal";
+import { Reveal } from "@/components/motion/reveal";
 
 type SubjectId = "analyst" | "engineer" | "contractor";
 type ResourceId = "payroll" | "proddb" | "cms";
@@ -129,6 +131,7 @@ function Segmented<T extends string>({
   options: [T, string][];
 }) {
   const name = useId();
+  const reduce = useReducedMotion();
   return (
     <fieldset>
       <legend className="text-sm font-medium">{legend}</legend>
@@ -145,14 +148,22 @@ function Segmented<T extends string>({
             />
             <span
               className={cn(
-                "pressable inline-flex h-9 cursor-pointer items-center rounded-full border px-3.5 text-sm select-none",
+                "pressable relative inline-flex h-9 cursor-pointer items-center rounded-full border px-3.5 text-sm select-none",
                 "peer-focus-visible:ring-4 peer-focus-visible:ring-ring",
                 value === id
-                  ? "border-foreground bg-foreground text-background"
+                  ? "border-transparent text-background"
                   : "border-border text-muted-foreground hover:border-foreground/30 hover:text-foreground",
               )}
             >
-              {label}
+              {value === id ? (
+                <motion.span
+                  layoutId={`seg-${name}`}
+                  aria-hidden="true"
+                  transition={reduce ? { duration: 0 } : { type: "spring", duration: 0.4, bounce: 0.15 }}
+                  className="absolute inset-0 rounded-full bg-foreground"
+                />
+              ) : null}
+              <span className="relative transition-colors duration-200">{label}</span>
             </span>
           </label>
         ))}
@@ -209,19 +220,22 @@ export function ZeroTrust() {
     [subject, resource, managed, passkey, location],
   );
   const meta = decisionMeta[result.decision];
+  const signature = `${subject}-${resource}-${managed}-${passkey}-${location}`;
 
   return (
     <section id="zero-trust" className="border-y border-border bg-surface py-24 md:py-32">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <h2 className="max-w-[20ch] text-4xl font-medium tracking-[-0.03em] text-balance md:text-5xl">
-          Every request has to earn its access.
+          <SplitReveal text="Every request has to earn its access." />
         </h2>
         <p className="mt-5 max-w-[58ch] text-lg leading-relaxed text-muted-foreground">
           A working model of the policies we design. Change who is asking, what
           they want, and where they are.
         </p>
 
-        <div className="mt-14 grid overflow-hidden rounded-(--radius-panel) border border-border bg-background lg:grid-cols-12">
+        <Reveal className="mt-14">
+        <LayoutGroup>
+        <div className="grid overflow-hidden rounded-(--radius-panel) border border-border bg-background lg:grid-cols-12">
           {/* Controls */}
           <div className="grid content-start gap-7 border-b border-border p-6 sm:p-8 lg:col-span-5 lg:border-r lg:border-b-0">
             <Segmented
@@ -277,17 +291,62 @@ export function ZeroTrust() {
             </div>
             <p className="text-muted-foreground">{result.session}</p>
 
-            <ul className="mt-8 grid gap-px overflow-hidden rounded-(--radius-field) border border-border bg-border sm:grid-cols-2">
-              {result.checks.map((c) => (
-                <li key={c.key} className="bg-background p-4">
-                  <div className="flex items-center gap-2 text-sm font-medium">
-                    {statusIcon[c.status]}
-                    {c.label}
-                  </div>
-                  <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{c.note}</p>
-                </li>
-              ))}
-            </ul>
+            <div className="relative mt-8 overflow-hidden rounded-(--radius-field)">
+              <ul className="grid gap-px overflow-hidden rounded-(--radius-field) border border-border bg-border sm:grid-cols-2">
+                {result.checks.map((c) => (
+                  <li
+                    key={c.key}
+                    className={cn(
+                      "p-4 transition-colors duration-300",
+                      c.status === "pass" && "bg-background",
+                      c.status === "warn" && "bg-[color-mix(in_oklch,var(--warn)_7%,var(--background))]",
+                      c.status === "fail" && "bg-[color-mix(in_oklch,var(--deny)_8%,var(--background))]",
+                    )}
+                  >
+                    <div className="flex items-center gap-2 text-sm font-medium">
+                      <span className="relative inline-flex size-[18px]">
+                        <AnimatePresence mode="popLayout" initial={false}>
+                          <motion.span
+                            key={c.status}
+                            initial={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.5, filter: "blur(4px)" }}
+                            animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+                            exit={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.5, filter: "blur(4px)" }}
+                            transition={{ type: "spring", duration: 0.35, bounce: 0.3 }}
+                            className="absolute inset-0"
+                          >
+                            {statusIcon[c.status]}
+                          </motion.span>
+                        </AnimatePresence>
+                      </span>
+                      {c.label}
+                    </div>
+                    <AnimatePresence mode="popLayout" initial={false}>
+                      <motion.p
+                        key={c.note}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.18 }}
+                        className="mt-1.5 text-sm leading-relaxed text-muted-foreground"
+                      >
+                        {c.note}
+                      </motion.p>
+                    </AnimatePresence>
+                  </li>
+                ))}
+              </ul>
+              {/* Evaluation sweep: a band of light passes over the checks on every re-run. */}
+              {reduce ? null : (
+                <motion.div
+                  key={signature}
+                  aria-hidden="true"
+                  initial={{ transform: "translateX(-100%)", opacity: 1 }}
+                  animate={{ transform: "translateX(100%)", opacity: 0.6 }}
+                  transition={{ duration: 0.7, ease: [0.77, 0, 0.175, 1] }}
+                  className="pointer-events-none absolute inset-0 rounded-(--radius-field) bg-[linear-gradient(90deg,transparent,color-mix(in_oklch,var(--signal)_18%,transparent),transparent)]"
+                />
+              )}
+            </div>
 
             <pre className="mt-6 overflow-x-auto rounded-(--radius-field) bg-surface p-4 font-mono text-[13px] leading-6">
               <code>
@@ -309,6 +368,8 @@ export function ZeroTrust() {
             </pre>
           </div>
         </div>
+        </LayoutGroup>
+        </Reveal>
       </div>
     </section>
   );

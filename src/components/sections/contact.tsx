@@ -9,6 +9,9 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { CTA_LABEL, site } from "@/lib/site";
 import { cn } from "@/lib/utils";
+import { SplitReveal } from "@/components/motion/split-reveal";
+import { Stagger, StaggerItem } from "@/components/motion/stagger";
+import { Reveal } from "@/components/motion/reveal";
 
 const interests = ["Security", "Identity & access", "AI automation", "Web", "Not sure yet"];
 const initial: BriefingState = { status: "idle" };
@@ -54,40 +57,40 @@ export function Contact() {
       <div className="mx-auto grid max-w-7xl gap-14 px-4 sm:px-6 lg:grid-cols-12 lg:px-8">
         <div className="lg:col-span-5">
           <h2 className="max-w-[16ch] text-4xl font-medium tracking-[-0.03em] text-balance md:text-5xl">
-            Thirty minutes with a senior engineer.
+            <SplitReveal text="Thirty minutes with a senior engineer." />
           </h2>
           <p className="mt-5 max-w-[44ch] text-lg leading-relaxed text-muted-foreground">
             Tell us what you run and what keeps you up at night. You will leave
             with three priorities, whether or not we work together.
           </p>
 
-          <dl className="mt-10 grid gap-5 text-[15px]">
-            <div>
+          <Stagger as="dl" gap={0.08} delay={0.2} className="mt-10 grid gap-5 text-[15px]">
+            <StaggerItem>
               <dt className="text-muted-foreground">Email</dt>
               <dd className="mt-1">
                 <a href={`mailto:${site.email}`} className="underline-offset-4 hover:underline">
                   {site.email}
                 </a>
               </dd>
-            </div>
-            <div>
+            </StaggerItem>
+            <StaggerItem>
               <dt className="text-muted-foreground">Phone, including incident line</dt>
               <dd className="mt-1">
                 <a href={site.phoneHref} className="underline-offset-4 hover:underline">
                   {site.phone}
                 </a>
               </dd>
-            </div>
-            <div>
+            </StaggerItem>
+            <StaggerItem>
               <dt className="text-muted-foreground">Office</dt>
               <dd className="mt-1">
                 {site.address.street}, {site.address.city}, {site.address.region}
               </dd>
-            </div>
-          </dl>
+            </StaggerItem>
+          </Stagger>
         </div>
 
-        <div className="lg:col-span-7">
+        <Reveal className="lg:col-span-7" delay={0.1}>
           <div className="rounded-(--radius-panel) border border-border bg-background p-6 sm:p-8">
             <AnimatePresence mode="wait" initial={false}>
               {state.status === "success" ? (
@@ -216,7 +219,7 @@ export function Contact() {
               )}
             </AnimatePresence>
           </div>
-        </div>
+        </Reveal>
       </div>
     </section>
   );

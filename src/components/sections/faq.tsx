@@ -5,6 +5,8 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { site } from "@/lib/site";
+import { SplitReveal } from "@/components/motion/split-reveal";
+import { Stagger, StaggerItem } from "@/components/motion/stagger";
 
 const faqs = [
   {
@@ -39,7 +41,7 @@ export function Faq() {
       <div className="mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-12 lg:px-8">
         <div className="lg:col-span-4">
           <h2 className="max-w-[14ch] text-4xl font-medium tracking-[-0.03em] text-balance md:text-5xl">
-            Questions buyers ask first.
+            <SplitReveal text="Questions buyers ask first." />
           </h2>
           <p className="mt-5 leading-relaxed text-muted-foreground">
             Something else on your mind? Email{" "}
@@ -49,13 +51,17 @@ export function Faq() {
             .
           </p>
         </div>
-        <Accordion className="border-t border-border lg:col-span-8">
-          {faqs.map((f) => (
-            <AccordionItem key={f.q} value={f.q}>
-              <AccordionTrigger>{f.q}</AccordionTrigger>
-              <AccordionContent>{f.a}</AccordionContent>
-            </AccordionItem>
-          ))}
+        <Accordion className="lg:col-span-8">
+          <Stagger gap={0.06} className="border-t border-border">
+            {faqs.map((f) => (
+              <StaggerItem key={f.q}>
+                <AccordionItem value={f.q}>
+                  <AccordionTrigger>{f.q}</AccordionTrigger>
+                  <AccordionContent>{f.a}</AccordionContent>
+                </AccordionItem>
+              </StaggerItem>
+            ))}
+          </Stagger>
         </Accordion>
       </div>
     </section>

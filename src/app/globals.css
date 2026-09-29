@@ -77,6 +77,7 @@
 
   --signal: oklch(0.55 0.2 260);
   --signal-soft: oklch(0.55 0.2 260 / 10%);
+  --signal-mark: oklch(0.55 0.2 260 / 17%);
   --allow: oklch(0.52 0.13 160);
   --warn: oklch(0.6 0.14 70);
   --deny: oklch(0.55 0.2 27);
@@ -103,6 +104,7 @@
 
     --signal: oklch(0.7 0.16 256);
     --signal-soft: oklch(0.7 0.16 256 / 12%);
+    --signal-mark: oklch(0.7 0.16 256 / 26%);
     --allow: oklch(0.74 0.14 160);
     --warn: oklch(0.8 0.13 80);
     --deny: oklch(0.7 0.17 25);
@@ -241,5 +243,138 @@
   }
   50% {
     transform: translate(-40px, -30px);
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Micro-interactions (studied from Pixel Point's work)                 */
+/* ------------------------------------------------------------------ */
+
+/* Underline that draws in from the left and leaves to the right. */
+@utility link-draw {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-size: 0% 1px;
+  background-position: 100% 100%;
+  transition: background-size 350ms var(--ease-out), color 200ms ease;
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background-size: 100% 1px;
+      background-position: 0% 100%;
+    }
+  }
+  &:focus-visible {
+    background-size: 100% 1px;
+    background-position: 0% 100%;
+  }
+}
+
+/* Arrow swap: the arrow exits along its direction and a twin enters behind it. */
+@utility arrow-swap {
+  position: relative;
+  display: inline-flex;
+  overflow: hidden;
+  & > * {
+    transition: transform 300ms var(--ease-out);
+  }
+  & > *:last-child {
+    position: absolute;
+    inset: 0;
+    transform: translateX(-120%);
+  }
+}
+@utility arrow-swap-y {
+  position: relative;
+  display: inline-flex;
+  overflow: hidden;
+  & > * {
+    transition: transform 300ms var(--ease-out);
+  }
+  & > *:last-child {
+    position: absolute;
+    inset: 0;
+    transform: translateY(-120%);
+  }
+}
+@media (hover: hover) and (pointer: fine) {
+  .group:hover .arrow-swap > *:first-child,
+  .group\/cta:hover .arrow-swap > *:first-child {
+    transform: translateX(120%);
+  }
+  .group:hover .arrow-swap > *:last-child,
+  .group\/cta:hover .arrow-swap > *:last-child {
+    transform: translateX(0);
+  }
+  .group:hover .arrow-swap-y > *:first-child,
+  .group\/cta:hover .arrow-swap-y > *:first-child {
+    transform: translateY(120%);
+  }
+  .group:hover .arrow-swap-y > *:last-child,
+  .group\/cta:hover .arrow-swap-y > *:last-child {
+    transform: translateY(0);
+  }
+}
+
+/* Featured card border: a slow comet of light travels the edge. */
+@property --spin {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+@keyframes spin-border {
+  to {
+    --spin: 360deg;
+  }
+}
+@utility comet-edge {
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    padding: 1px;
+    border-radius: inherit;
+    pointer-events: none;
+    background: conic-gradient(
+      from var(--spin),
+      transparent 0deg,
+      transparent 250deg,
+      color-mix(in oklch, var(--signal) 90%, white) 320deg,
+      transparent 360deg
+    );
+    mask:
+      linear-gradient(#000 0 0) content-box exclude,
+      linear-gradient(#000 0 0);
+    animation: spin-border 6s linear infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    &::before {
+      animation: none;
+      background: color-mix(in oklch, var(--signal) 40%, transparent);
+    }
+  }
+}
+
+/* Terminal caret */
+@keyframes caret {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+@utility caret {
+  display: inline-block;
+  width: 0.55em;
+  height: 1.1em;
+  margin-left: 2px;
+  vertical-align: -0.2em;
+  background: currentColor;
+  animation: caret 1s steps(1) infinite;
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
   }
 }

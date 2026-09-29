@@ -1,3 +1,4 @@
+import { Play } from "@phosphor-icons/react/dist/ssr";
 import { Reveal } from "@/components/motion/reveal";
 import { SplitReveal } from "@/components/motion/split-reveal";
 import { SpotlightCard } from "@/components/motion/spotlight-card";
@@ -21,15 +22,15 @@ export function Engagements() {
     <section className="py-24 md:py-32">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Reveal>
-          <p className="font-mono text-xs tracking-[0.18em] text-signal uppercase">Ways to work together</p>
+          <p className="flex items-center gap-2 font-mono text-xs tracking-[0.14em] text-muted-foreground uppercase"><Play weight="fill" size={9} className="text-signal" />Ways to work together</p>
         </Reveal>
-        <h2 className="mt-4 max-w-[20ch] text-4xl font-medium tracking-[-0.03em] text-balance md:text-5xl">
-          <SplitReveal text="Start small, or hand us the whole program." />
+        <h2 className="mt-4 max-w-[20ch] text-4xl leading-[1.08] font-normal tracking-[-0.035em] text-balance md:text-5xl">
+          <SplitReveal text="Start small," muted="or hand us the whole program." />
         </h2>
 
         <div className="mt-14 grid gap-4 lg:grid-cols-5">
           <Reveal className="lg:col-span-3">
-            <SpotlightCard strength={20} className="flex h-full flex-col justify-between overflow-hidden rounded-(--radius-panel) border border-signal/30 bg-surface p-8 md:p-10">
+            <SpotlightCard strength={20} className="comet-edge flex h-full flex-col justify-between overflow-hidden rounded-(--radius-panel) border border-border bg-surface p-8 md:p-10">
               <div
                 aria-hidden="true"
                 className="absolute -right-24 -bottom-32 -z-20 size-[28rem] rounded-full bg-signal/20 blur-3xl motion-safe:animate-[drift_14s_ease-in-out_infinite]"

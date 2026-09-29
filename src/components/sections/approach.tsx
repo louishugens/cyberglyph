@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView, useReducedMotion, useScroll, useSpring } from "motion/react";
+import { Play } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
 import { SplitReveal } from "@/components/motion/split-reveal";
 import { Stagger, StaggerItem } from "@/components/motion/stagger";
@@ -58,8 +59,22 @@ function Step({
         !active && "lg:opacity-35",
       )}
     >
-      <p className="font-mono text-sm text-signal lg:hidden">{step.verb}</p>
-      <h3 className="mt-2 text-3xl font-medium tracking-[-0.025em] text-balance md:text-4xl lg:mt-0">
+      <div className="flex items-end justify-between gap-6">
+        <p className="flex items-center gap-2 font-mono text-xs tracking-[0.14em] text-muted-foreground uppercase">
+          <Play weight="fill" size={9} className="text-signal" />
+          {step.verb}
+        </p>
+        <span
+          aria-hidden="true"
+          className={cn(
+            "font-mono text-6xl leading-none tracking-[-0.06em] transition-colors duration-500 md:text-7xl",
+            active ? "text-signal/35" : "text-foreground/[0.07]",
+          )}
+        >
+          {String(index + 1).padStart(2, "0")}
+        </span>
+      </div>
+      <h3 className="mt-4 text-3xl font-normal tracking-[-0.03em] text-balance md:text-4xl">
         {step.title}
       </h3>
       <p className="mt-4 max-w-[52ch] text-lg leading-relaxed text-muted-foreground">{step.body}</p>
@@ -86,8 +101,8 @@ export function Approach() {
       <div className="mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-12 lg:px-8">
         <div className="lg:col-span-5">
           <div className="lg:sticky lg:top-28">
-            <h2 className="max-w-[16ch] text-4xl font-medium tracking-[-0.03em] text-balance md:text-5xl">
-              <SplitReveal text="How an engagement runs." />
+            <h2 className="max-w-[16ch] text-4xl leading-[1.08] font-normal tracking-[-0.035em] text-balance md:text-5xl">
+              <SplitReveal text="How an engagement runs." muted="From first map to steady operations." />
             </h2>
             <div className="mt-10 hidden gap-6 lg:flex">
               <div className="relative w-px bg-border">

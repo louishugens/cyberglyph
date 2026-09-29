@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { List, X } from "@phosphor-icons/react";
 import { Logo } from "@/components/logo";
+import { ScrambleText } from "@/components/motion/scramble-text";
 import { CTA_LABEL, nav } from "@/lib/site";
 
 export function SiteHeader() {
@@ -29,7 +30,7 @@ export function SiteHeader() {
               href={item.href}
               className="rounded-full px-3.5 py-2 text-sm text-muted-foreground transition-colors duration-200 outline-none hover:text-foreground focus-visible:ring-4 focus-visible:ring-ring"
             >
-              {item.label}
+              <ScrambleText>{item.label}</ScrambleText>
             </a>
           ))}
         </nav>

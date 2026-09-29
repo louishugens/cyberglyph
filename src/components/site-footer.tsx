@@ -1,5 +1,6 @@
 import { LinkedinLogo } from "@phosphor-icons/react/dist/ssr";
 import { Logo } from "@/components/logo";
+import { ScrambleText } from "@/components/motion/scramble-text";
 import { nav, site } from "@/lib/site";
 
 const practices = [
@@ -26,9 +27,9 @@ export function SiteFooter() {
             <br />
             {site.address.city}, {site.address.region} {site.address.postal}
             <br />
-            <a href={site.phoneHref} className="hover:text-foreground">{site.phone}</a>
+            <a href={site.phoneHref} className="link-draw hover:text-foreground">{site.phone}</a>
             <br />
-            <a href={`mailto:${site.email}`} className="hover:text-foreground">{site.email}</a>
+            <a href={`mailto:${site.email}`} className="link-draw hover:text-foreground">{site.email}</a>
           </address>
         </div>
 
@@ -38,7 +39,7 @@ export function SiteFooter() {
             <ul className="mt-4 grid gap-3 text-sm text-muted-foreground">
               {practices.map((p) => (
                 <li key={p}>
-                  <a href="#practices" className="hover:text-foreground">{p}</a>
+                  <a href="#practices" className="hover:text-foreground"><ScrambleText>{p}</ScrambleText></a>
                 </li>
               ))}
             </ul>
@@ -48,11 +49,11 @@ export function SiteFooter() {
             <ul className="mt-4 grid gap-3 text-sm text-muted-foreground">
               {nav.slice(1).map((n) => (
                 <li key={n.href}>
-                  <a href={n.href} className="hover:text-foreground">{n.label}</a>
+                  <a href={n.href} className="hover:text-foreground"><ScrambleText>{n.label}</ScrambleText></a>
                 </li>
               ))}
               <li>
-                <a href="#contact" className="hover:text-foreground">Contact</a>
+                <a href="#contact" className="hover:text-foreground"><ScrambleText>Contact</ScrambleText></a>
               </li>
             </ul>
           </div>
@@ -72,9 +73,9 @@ export function SiteFooter() {
         <div className="mx-auto flex max-w-7xl flex-col gap-2 px-4 py-6 text-sm text-muted-foreground sm:flex-row sm:justify-between sm:px-6 lg:px-8">
           <p>&copy; {new Date().getFullYear()} {site.name}. All rights reserved.</p>
           <p>
-            <a href="#" className="hover:text-foreground">Privacy</a>
+            <a href="#" className="link-draw hover:text-foreground">Privacy</a>
             <span className="px-2">/</span>
-            <a href="#" className="hover:text-foreground">Responsible disclosure</a>
+            <a href="#" className="link-draw hover:text-foreground">Responsible disclosure</a>
           </p>
         </div>
       </div>

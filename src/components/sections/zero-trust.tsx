@@ -1,11 +1,12 @@
 "use client";
 
-import { useId, useMemo, useState } from "react";
+import { useEffect, useId, useMemo, useState } from "react";
 import { AnimatePresence, LayoutGroup, motion, useReducedMotion } from "motion/react";
 import { CheckCircle, WarningCircle, XCircle } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
 import { SplitReveal } from "@/components/motion/split-reveal";
 import { Reveal } from "@/components/motion/reveal";
+import { Highlight } from "@/components/motion/highlight";
 
 type SubjectId = "analyst" | "engineer" | "contractor";
 type ResourceId = "payroll" | "proddb" | "cms";
@@ -207,6 +208,31 @@ function Toggle({
   );
 }
 
+/**
+ * Mono trace line that types itself out on each evaluation, ending on a live
+ * caret. Remounted per evaluation (keyed by its text) so it restarts cleanly.
+ */
+function TypeLine({ text }: { text: string }) {
+  const reduce = useReducedMotion();
+  const [n, setN] = useState(reduce ? text.length : 0);
+  useEffect(() => {
+    if (reduce) return;
+    const id = setInterval(() => {
+      setN((v) => {
+        if (v >= text.length) clearInterval(id);
+        return Math.min(v + 2, text.length);
+      });
+    }, 16);
+    return () => clearInterval(id);
+  }, [text, reduce]);
+  return (
+    <p className="mt-3 truncate font-mono text-xs text-muted-foreground" aria-hidden="true">
+      <span className="text-signal">$</span> {reduce ? text : text.slice(0, n)}
+      <span className="caret text-signal/70" />
+    </p>
+  );
+}
+
 export function ZeroTrust() {
   const reduce = useReducedMotion();
   const [subject, setSubject] = useState<SubjectId>("analyst");
@@ -225,8 +251,9 @@ export function ZeroTrust() {
   return (
     <section id="zero-trust" className="border-y border-border bg-surface py-24 md:py-32">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <h2 className="max-w-[20ch] text-4xl font-medium tracking-[-0.03em] text-balance md:text-5xl">
-          <SplitReveal text="Every request has to earn its access." />
+        <h2 className="max-w-[20ch] text-4xl leading-[1.08] font-normal tracking-[-0.035em] text-balance md:text-5xl">
+          <SplitReveal text="Every request has to" />{" "}
+          <Highlight delay={0.4}>earn its access.</Highlight>
         </h2>
         <p className="mt-5 max-w-[58ch] text-lg leading-relaxed text-muted-foreground">
           A working model of the policies we design. Change who is asking, what
@@ -290,6 +317,10 @@ export function ZeroTrust() {
               </AnimatePresence>
             </div>
             <p className="text-muted-foreground">{result.session}</p>
+            <TypeLine
+              key={signature}
+              text={`policy.evaluate(role="${subjects[subject].group}", resource="${resource}", device=${managed ? "managed" : "unmanaged"}, auth=${passkey ? "passkey" : "password"}, context="${location}")`}
+            />
 
             <div className="relative mt-8 overflow-hidden rounded-(--radius-field)">
               <ul className="grid gap-px overflow-hidden rounded-(--radius-field) border border-border bg-border sm:grid-cols-2">

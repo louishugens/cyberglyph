@@ -56,19 +56,19 @@ export function Contact() {
     <section id="contact" className="border-t border-border bg-surface py-24 md:py-32">
       <div className="mx-auto grid max-w-7xl gap-14 px-4 sm:px-6 lg:grid-cols-12 lg:px-8">
         <div className="lg:col-span-5">
-          <h2 className="max-w-[16ch] text-4xl font-medium tracking-[-0.03em] text-balance md:text-5xl">
-            <SplitReveal text="Thirty minutes with a senior engineer." />
+          <h2 className="max-w-[16ch] text-4xl leading-[1.08] font-normal tracking-[-0.035em] text-balance md:text-5xl">
+            <SplitReveal text="Thirty minutes with a senior engineer." muted="Three priorities, whether or not we work together." />
           </h2>
           <p className="mt-5 max-w-[44ch] text-lg leading-relaxed text-muted-foreground">
-            Tell us what you run and what keeps you up at night. You will leave
-            with three priorities, whether or not we work together.
+            Tell us what you run and what keeps you up at night. We come prepared
+            with questions, not a pitch deck.
           </p>
 
           <Stagger as="dl" gap={0.08} delay={0.2} className="mt-10 grid gap-5 text-[15px]">
             <StaggerItem>
               <dt className="text-muted-foreground">Email</dt>
               <dd className="mt-1">
-                <a href={`mailto:${site.email}`} className="underline-offset-4 hover:underline">
+                <a href={`mailto:${site.email}`} className="link-draw">
                   {site.email}
                 </a>
               </dd>
@@ -76,7 +76,7 @@ export function Contact() {
             <StaggerItem>
               <dt className="text-muted-foreground">Phone, including incident line</dt>
               <dd className="mt-1">
-                <a href={site.phoneHref} className="underline-offset-4 hover:underline">
+                <a href={site.phoneHref} className="link-draw">
                   {site.phone}
                 </a>
               </dd>
@@ -204,13 +204,16 @@ export function Contact() {
                         "We reply within one business day."
                       )}
                     </p>
-                    <button type="submit" disabled={pending} className="btn-primary min-w-44 disabled:opacity-70">
+                    <button type="submit" disabled={pending} className="btn-primary group min-w-44 disabled:opacity-70">
                       {pending ? (
                         <CircleNotch size={16} weight="bold" className="animate-spin" />
                       ) : (
                         <>
                           {CTA_LABEL}
-                          <ArrowRight size={16} weight="bold" />
+                          <span className="arrow-swap">
+                            <ArrowRight size={16} weight="bold" />
+                            <ArrowRight size={16} weight="bold" />
+                          </span>
                         </>
                       )}
                     </button>

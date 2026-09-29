@@ -40,12 +40,12 @@ export function Faq() {
     <section id="faq" className="border-t border-border py-24 md:py-32">
       <div className="mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-12 lg:px-8">
         <div className="lg:col-span-4">
-          <h2 className="max-w-[14ch] text-4xl font-medium tracking-[-0.03em] text-balance md:text-5xl">
+          <h2 className="max-w-[14ch] text-4xl leading-[1.08] font-normal tracking-[-0.035em] text-balance md:text-5xl">
             <SplitReveal text="Questions buyers ask first." />
           </h2>
           <p className="mt-5 leading-relaxed text-muted-foreground">
             Something else on your mind? Email{" "}
-            <a href={`mailto:${site.email}`} className="text-foreground underline underline-offset-4">
+            <a href={`mailto:${site.email}`} className="link-draw text-foreground">
               {site.email}
             </a>
             .

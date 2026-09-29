@@ -1,4 +1,4 @@
-import { ArrowDown } from "@phosphor-icons/react/dist/ssr";
+import { ArrowDown, Play } from "@phosphor-icons/react/dist/ssr";
 import { Reveal } from "@/components/motion/reveal";
 import { SplitReveal } from "@/components/motion/split-reveal";
 import { SpotlightCard } from "@/components/motion/spotlight-card";
@@ -50,10 +50,10 @@ export function Practices() {
     <section id="practices" className="py-24 md:py-32">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Reveal>
-          <p className="font-mono text-xs tracking-[0.18em] text-signal uppercase">Practices</p>
+          <p className="flex items-center gap-2 font-mono text-xs tracking-[0.14em] text-muted-foreground uppercase"><Play weight="fill" size={9} className="text-signal" />Practices</p>
         </Reveal>
-        <h2 className="mt-4 max-w-[22ch] text-4xl font-medium tracking-[-0.03em] text-balance md:text-5xl">
-          <SplitReveal text="Four practices. One team accountable for all of it." />
+        <h2 className="mt-4 max-w-[22ch] text-4xl leading-[1.08] font-normal tracking-[-0.035em] text-balance md:text-5xl">
+          <SplitReveal text="Four practices." muted="One team accountable for all of it." />
         </h2>
 
         <div className="mt-14 grid gap-4 md:grid-cols-6">
@@ -114,11 +114,10 @@ export function Practices() {
                 className="pressable group/cta relative mt-8 inline-flex w-fit items-center gap-2 rounded-full bg-primary-foreground/12 px-4 py-2.5 text-sm font-medium ring-1 ring-primary-foreground/25 outline-none hover:bg-primary-foreground/20 focus-visible:ring-4 focus-visible:ring-primary-foreground/60"
               >
                 Try the policy engine
-                <ArrowDown
-                  size={14}
-                  weight="bold"
-                  className="transition-transform duration-200 ease-out group-hover/cta:translate-y-0.5"
-                />
+                <span className="arrow-swap-y">
+                  <ArrowDown size={14} weight="bold" />
+                  <ArrowDown size={14} weight="bold" />
+                </span>
               </a>
             </SpotlightCard>
           </Reveal>

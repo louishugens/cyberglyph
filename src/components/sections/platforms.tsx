@@ -1,32 +1,38 @@
 // Logos: Simple Icons (CC0), self-hosted in /public/logos.
 // Rendered as CSS masks so one file serves both themes.
+// Third value: whether the brand color reads on both themes. Near-black marks
+// (GitHub, Vercel, ...) brighten to the foreground color instead.
 const platforms = [
-  ["okta", "Okta"],
-  ["auth0", "Auth0"],
-  ["cloudflare", "Cloudflare"],
-  ["googlecloud", "Google Cloud"],
-  ["paloaltonetworks", "Palo Alto Networks"],
-  ["fortinet", "Fortinet"],
-  ["datadog", "Datadog"],
-  ["1password", "1Password"],
-  ["hashicorp", "HashiCorp"],
-  ["terraform", "Terraform"],
-  ["kubernetes", "Kubernetes"],
-  ["github", "GitHub"],
-  ["vercel", "Vercel"],
-  ["anthropic", "Anthropic"],
-  ["n8n", "n8n"],
+  ["okta", "Okta", true],
+  ["auth0", "Auth0", true],
+  ["cloudflare", "Cloudflare", true],
+  ["googlecloud", "Google Cloud", true],
+  ["paloaltonetworks", "Palo Alto Networks", true],
+  ["fortinet", "Fortinet", true],
+  ["datadog", "Datadog", true],
+  ["1password", "1Password", true],
+  ["hashicorp", "HashiCorp", false],
+  ["terraform", "Terraform", true],
+  ["kubernetes", "Kubernetes", true],
+  ["github", "GitHub", false],
+  ["vercel", "Vercel", false],
+  ["anthropic", "Anthropic", false],
+  ["n8n", "n8n", true],
 ] as const;
 
 function Row({ hidden = false }: { hidden?: boolean }) {
   return (
     <ul aria-hidden={hidden || undefined} className="flex shrink-0 items-center gap-14 pr-14">
-      {platforms.map(([slug, name]) => (
-        <li key={slug}>
+      {platforms.map(([slug, name, colored]) => (
+        <li key={slug} className="group/logo relative">
           <span
             role={hidden ? undefined : "img"}
             aria-label={hidden ? undefined : name}
-            className="block size-8 bg-muted-foreground/80 transition-colors duration-200 hover:bg-foreground"
+            className={
+              colored
+                ? "block size-8 bg-muted-foreground/80 transition-opacity duration-300 group-hover/logo:opacity-0"
+                : "block size-8 bg-muted-foreground/80 transition-colors duration-300 group-hover/logo:bg-foreground"
+            }
             style={{
               maskImage: `url(/logos/${slug}.svg)`,
               WebkitMaskImage: `url(/logos/${slug}.svg)`,
@@ -35,6 +41,15 @@ function Row({ hidden = false }: { hidden?: boolean }) {
               maskPosition: "center",
             }}
           />
+          {colored ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={`/logos/${slug}.svg`}
+              alt=""
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0 size-8 scale-90 opacity-0 transition-[opacity,transform] duration-300 ease-(--ease-out) group-hover/logo:scale-100 group-hover/logo:opacity-100"
+            />
+          ) : null}
         </li>
       ))}
     </ul>

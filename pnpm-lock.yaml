@@ -11,6 +11,9 @@ dependencies:
   '@phosphor-icons/react':
     specifier: ^2.1.10
     version: 2.1.10(react-dom@19.2.8)(react@19.2.8)
+  '@rive-app/react-canvas':
+    specifier: ^4.35.0
+    version: 4.35.0(react@19.2.8)
   class-variance-authority:
     specifier: ^0.7.1
     version: 0.7.1
@@ -1046,6 +1049,19 @@ packages:
     dependencies:
       react: 19.2.8
       react-dom: 19.2.8(react@19.2.8)
+    dev: false
+
+  /@rive-app/canvas@2.43.1:
+    resolution: {integrity: sha512-GqENtpSOK5KOnF+kmzDQ70tfEQYksSOb39jcPPAV5vj5XDJ3vekPdbqTWuQdEyOFMhJUir4iBo3On9Gy2hghtQ==}
+    dev: false
+
+  /@rive-app/react-canvas@4.35.0(react@19.2.8):
+    resolution: {integrity: sha512-aPkFcsVf/aKSPYPj1sUJ2n5NkKeSQtEEWUPphejbhbcUbyyEzpIp4JRK4Ki7MTNvtCwu4p8tiSTZ1upC3oPRDA==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0
+    dependencies:
+      '@rive-app/canvas': 2.43.1
+      react: 19.2.8
     dev: false
 
   /@rtsao/scc@1.1.0:

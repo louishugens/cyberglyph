@@ -6,11 +6,13 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "rive:build": "cd design/rive/padlock && python3 gen.py && rive . --once && cp build/padlock.riv ../../../public/rive/padlock.riv"
   },
   "dependencies": {
     "@base-ui/react": "^1.8.0",
     "@phosphor-icons/react": "^2.1.10",
+    "@rive-app/react-canvas": "^4.35.0",
     "class-variance-authority": "^0.7.1",
     "cn": "^0.4.0",
     "lucide-react": "^1.48.0",

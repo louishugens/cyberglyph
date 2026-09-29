@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { SplitReveal } from "@/components/motion/split-reveal";
 import { Reveal } from "@/components/motion/reveal";
 import { Highlight } from "@/components/motion/highlight";
+import { DecisionPadlock } from "@/components/motion/decision-padlock";
 
 type SubjectId = "analyst" | "engineer" | "contractor";
 type ResourceId = "payroll" | "proddb" | "cms";
@@ -108,10 +109,10 @@ function evaluate(s: SubjectId, r: ResourceId, managed: boolean, passkey: boolea
   return { checks, decision, session };
 }
 
-const decisionMeta: Record<Decision, { label: string; tone: string; ring: string }> = {
-  allow: { label: "Allow", tone: "text-allow", ring: "bg-allow" },
-  stepup: { label: "Step-up", tone: "text-warn", ring: "bg-warn" },
-  deny: { label: "Deny", tone: "text-deny", ring: "bg-deny" },
+const decisionMeta: Record<Decision, { label: string; tone: string }> = {
+  allow: { label: "Allow", tone: "text-allow" },
+  stepup: { label: "Step-up", tone: "text-warn" },
+  deny: { label: "Deny", tone: "text-deny" },
 };
 
 const statusIcon = {
@@ -290,7 +291,7 @@ export function ZeroTrust() {
           </div>
 
           {/* Decision */}
-          <div className="p-6 sm:p-8 lg:col-span-7" aria-live="polite">
+          <div className="min-w-0 p-6 sm:p-8 lg:col-span-7" aria-live="polite">
             <div className="flex items-center justify-between gap-6">
               <p className="text-sm text-muted-foreground">Decision</p>
               <p className="font-mono text-xs text-muted-foreground">
@@ -298,11 +299,8 @@ export function ZeroTrust() {
               </p>
             </div>
 
-            <div className="relative mt-2 flex h-20 items-center gap-4">
-              <span className="relative flex size-3">
-                <span className={cn("absolute inset-0 rounded-full opacity-40 motion-safe:animate-ping", meta.ring)} />
-                <span className={cn("relative size-3 rounded-full", meta.ring)} />
-              </span>
+            <div className="relative mt-2 flex h-24 min-w-0 items-center gap-1 sm:h-28 sm:gap-2">
+              <DecisionPadlock decision={result.decision} className="-ml-3 size-20 shrink-0 sm:-ml-4 sm:size-28" />
               <AnimatePresence mode="popLayout" initial={false}>
                 <motion.p
                   key={result.decision}
@@ -310,7 +308,7 @@ export function ZeroTrust() {
                   animate={{ opacity: 1, filter: "blur(0px)", transform: "translateY(0px)" }}
                   exit={reduce ? { opacity: 0 } : { opacity: 0, filter: "blur(6px)", transform: "translateY(-10px)" }}
                   transition={{ duration: 0.22, ease: [0.23, 1, 0.32, 1] }}
-                  className={cn("text-6xl font-medium tracking-[-0.04em]", meta.tone)}
+                  className={cn("text-5xl font-medium tracking-[-0.04em] sm:text-6xl", meta.tone)}
                 >
                   {meta.label}
                 </motion.p>

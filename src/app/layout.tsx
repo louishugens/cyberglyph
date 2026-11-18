@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { SiteHeader } from "@/components/site-header";
+import { SiteFooter } from "@/components/site-footer";
 import { site } from "@/lib/site";
 import "./globals.css";
 
@@ -16,17 +18,18 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: "CyberGlyph Security | Cybersecurity, Identity & AI Engineering",
+    default: "CyberGlyph Security | Cybersecurity for Small and Midsize Businesses",
     template: "%s | CyberGlyph Security",
   },
   description: site.description,
   keywords: [
-    "cybersecurity New York",
+    "cybersecurity for small business",
+    "cybersecurity assessment",
     "identity and access management",
+    "Microsoft 365 security",
+    "endpoint security",
     "zero trust",
-    "security assessment",
-    "AI automation",
-    "web development",
+    "web design and AI chatbots",
   ],
   openGraph: {
     type: "website",
@@ -41,14 +44,11 @@ export const metadata: Metadata = {
     title: "CyberGlyph Security",
     description: site.description,
   },
-  alternates: { canonical: "/" },
 };
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f8f9fc" },
-    { media: "(prefers-color-scheme: dark)", color: "#0e1119" },
-  ],
+  themeColor: "#050d1a",
+  colorScheme: "dark",
 };
 
 const jsonLd = {
@@ -74,6 +74,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
+      data-scroll-behavior="smooth"
       className={`${geistSans.variable} ${geistMono.variable} antialiased`}
     >
       <body className="grain min-h-dvh">
@@ -81,7 +82,15 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        {children}
+        <a
+          href="#main"
+          className="sr-only z-50 rounded-full bg-primary px-4 py-2 text-primary-foreground focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
+        >
+          Skip to content
+        </a>
+        <SiteHeader />
+        <main id="main">{children}</main>
+        <SiteFooter />
       </body>
     </html>
   );

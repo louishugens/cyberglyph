@@ -14,10 +14,13 @@ const EASE_OUT = [0.23, 1, 0.32, 1] as const;
 export function SplitReveal({
   text,
   muted,
+  tone = "muted",
   delay = 0,
 }: {
   text: string;
   muted?: string;
+  /** Colour of the second phrase: quiet grey, or gold when it is the point. */
+  tone?: "muted" | "gold";
   delay?: number;
 }) {
   const reduce = useReducedMotion();
@@ -26,15 +29,6 @@ export function SplitReveal({
     ...(muted ? muted.split(" ").map((w) => ({ w, muted: true })) : []),
   ];
   const full = muted ? `${text} ${muted}` : text;
-
-  if (reduce) {
-    return (
-      <>
-        {text}
-        {muted ? <span className="text-muted-foreground"> {muted}</span> : null}
-      </>
-    );
-  }
 
   return (
     <>
@@ -48,11 +42,14 @@ export function SplitReveal({
       >
         {words.map(({ w, muted: m }, i) => (
           <Fragment key={i}>
-            <span className={m ? "inline-block pb-[0.08em] text-muted-foreground" : "inline-block pb-[0.08em]"}>
+            <span className={m ? `inline-block pb-[0.08em] ${tone === "gold" ? "text-gold-ink" : "text-muted-foreground"}` : "inline-block pb-[0.08em]"}>
               <motion.span
                 className="inline-block will-change-transform"
                 variants={{
-                  hidden: { opacity: 0, transform: "translateY(0.45em)", filter: "blur(6px)" },
+                  // Same markup either way (no hydration branch); reduced motion only fades.
+                  hidden: reduce
+                    ? { opacity: 0, transform: "translateY(0em)", filter: "blur(0px)" }
+                    : { opacity: 0, transform: "translateY(0.45em)", filter: "blur(6px)" },
                   show: {
                     opacity: 1,
                     transform: "translateY(0em)",

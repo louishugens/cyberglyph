@@ -1,4 +1,5 @@
 import type { CSSProperties } from "react";
+import Link from "next/link";
 import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
 import { GlyphField } from "@/components/motion/glyph-field";
 import { FloatingKey } from "@/components/motion/floating-key";
@@ -30,14 +31,14 @@ export function Hero() {
             AI automations and web platforms your team runs on.
           </p>
           <div style={step(2)} className="rise mt-9 flex flex-wrap items-center gap-3">
-            <a href="#contact" className="btn-primary group">
+            <Link href="/contact" className="btn-primary group">
               {CTA_LABEL}
               <ArrowRight
                 size={16}
                 weight="bold"
                 className="transition-transform duration-200 ease-out group-hover:translate-x-0.5"
               />
-            </a>
+            </Link>
             <a href="#practices" className="btn-ghost">
               Explore practices
             </a>

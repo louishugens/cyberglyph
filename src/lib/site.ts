@@ -5,7 +5,7 @@ export const site = {
   shortName: "CyberGlyph",
   url: "https://cyberglyph.security", // PLACEHOLDER: confirm production domain
   description:
-    "CyberGlyph Security secures identities, hardens infrastructure, and builds the AI automations and web platforms New York businesses run on.",
+    "CyberGlyph Security helps small and midsize businesses protect their identities, devices, data, and applications, and builds the websites and AI tools they run on.",
   email: "hello@cyberglyph.security", // PLACEHOLDER
   phone: "+1 (212) 555-0147", // PLACEHOLDER
   phoneHref: "tel:+12125550147", // PLACEHOLDER
@@ -20,11 +20,11 @@ export const site = {
 } as const;
 
 export const nav = [
-  { label: "Practices", href: "#practices" },
-  { label: "Zero trust", href: "#zero-trust" },
-  { label: "Approach", href: "#approach" },
-  { label: "FAQ", href: "#faq" },
+  { label: "Services", href: "/services" },
+  { label: "Assessment", href: "/assessment" },
+  { label: "Who we serve", href: "/industries" },
+  { label: "Zero trust", href: "/zero-trust" },
 ] as const;
 
-// One label for the contact intent, used everywhere on the page.
+// One label for the contact intent, used everywhere on the site.
 export const CTA_LABEL = "Book a briefing";

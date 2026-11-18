@@ -42,6 +42,6 @@ export async function requestBriefing(
 
   return {
     status: "success",
-    message: `Thanks, ${values.name.split(" ")[0]}. A senior engineer will reply within one business day.`,
+    message: `Thanks, ${values.name.split(" ")[0]}. We have your request and will reply by email.`,
   };
 }

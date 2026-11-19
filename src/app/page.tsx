@@ -16,21 +16,6 @@ import { featured } from "@/lib/services";
 
 export const metadata: Metadata = { alternates: { canonical: "/" } };
 
-const clients = [
-  "Law firms",
-  "Accounting firms",
-  "Medical practices",
-  "Dental practices",
-  "Insurance companies",
-  "SaaS companies",
-  "Clinics",
-  "Consulting companies",
-  "Real estate",
-  "Nonprofits",
-  "Construction",
-  "Retail",
-];
-
 const gaps = [
   "No full-time security engineer",
   "An IT provider with limited security expertise",
@@ -49,34 +34,10 @@ const roadmap = [
 // Bento rhythm: wide + narrow, then narrow + wide.
 const spans = ["md:col-span-7", "md:col-span-5", "md:col-span-5", "md:col-span-7"];
 
-function ClientRow({ hidden = false }: { hidden?: boolean }) {
-  return (
-    <ul aria-hidden={hidden || undefined} className="flex shrink-0 items-center gap-12 pr-12">
-      {clients.map((c) => (
-        <li key={c} className="text-xl font-medium tracking-[-0.02em] whitespace-nowrap text-foreground/40 md:text-2xl">
-          {c}
-        </li>
-      ))}
-    </ul>
-  );
-}
-
 export default function Home() {
   return (
     <>
       <Hero />
-
-      <section aria-labelledby="clients-title" className="py-10">
-        <h2 id="clients-title" className="sr-only">
-          Who we serve
-        </h2>
-        <div className="group flex overflow-hidden [mask-image:linear-gradient(90deg,transparent,black_12%,black_88%,transparent)]">
-          <div className="flex animate-[marquee_60s_linear_infinite] group-hover:[animation-play-state:paused] motion-reduce:animate-none">
-            <ClientRow />
-            <ClientRow hidden />
-          </div>
-        </div>
-      </section>
 
       <section id="practices" className="py-24 md:py-36">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

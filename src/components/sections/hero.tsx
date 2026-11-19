@@ -1,22 +1,46 @@
 import type { CSSProperties } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
+import { ClientMarquee } from "@/components/client-marquee";
 import { GlyphField } from "@/components/motion/glyph-field";
-import { FloatingKey } from "@/components/motion/floating-key";
+import { HeroVideo } from "@/components/motion/hero-video";
 import { CTA_LABEL } from "@/lib/site";
 
 const step = (i: number) => ({ "--i": i }) as CSSProperties;
 
+// Set to "/video/hero.mp4" once the film exists in public/video. Until then
+// the hero shows the same scene as a still with a slow drift.
+const HERO_VIDEO: string | null = null;
+const HERO_STILL = "/images/photo-office-soft.webp";
+
 export function Hero() {
   return (
-    <section
-      id="top"
-      className="relative isolate overflow-hidden border-b border-border"
-    >
-      <GlyphField className="absolute inset-0 -z-10 size-full [mask-image:radial-gradient(ellipse_90%_38%_at_50%_82%,black_20%,transparent_75%)] lg:[mask-image:radial-gradient(ellipse_75%_85%_at_72%_45%,black_20%,transparent_75%)]" />
+    // Pulled up under the floating header so the film runs edge to edge behind the glass.
+    <section id="top" className="relative isolate -mt-[4.25rem] flex min-h-dvh flex-col overflow-hidden pt-[4.25rem]">
+      <div className="absolute inset-0 -z-20 [mask-image:linear-gradient(180deg,black_70%,transparent)]">
+        {HERO_VIDEO ? (
+          <HeroVideo src={HERO_VIDEO} poster={HERO_STILL} className="size-full object-cover" />
+        ) : (
+          <Image
+            src={HERO_STILL}
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-[60%_35%] brightness-110 motion-safe:animate-[hero-drift_40s_ease-in-out_infinite_alternate]"
+          />
+        )}
+        {/* Scrim: solid behind the copy, clearing toward the right so the film reads. */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-[linear-gradient(90deg,var(--background)_0%,color-mix(in_oklch,var(--background)_82%,transparent)_38%,color-mix(in_oklch,var(--background)_30%,transparent)_75%,color-mix(in_oklch,var(--background)_45%,transparent)_100%)] max-lg:bg-background/75"
+        />
+      </div>
+      <GlyphField className="absolute inset-0 -z-10 size-full opacity-70 [mask-image:radial-gradient(ellipse_90%_38%_at_50%_82%,black_20%,transparent_75%)] lg:[mask-image:radial-gradient(ellipse_75%_85%_at_72%_45%,black_20%,transparent_75%)]" />
 
-      <div className="mx-auto grid min-h-[calc(100dvh-4rem)] max-w-7xl items-center gap-10 px-4 pt-14 pb-16 sm:px-6 md:pt-20 lg:grid-cols-12 lg:gap-6 lg:px-8 lg:pb-20">
-        <div className="lg:col-span-7">
+      <div className="mx-auto flex w-full max-w-7xl flex-1 items-center px-4 py-14 sm:px-6 lg:px-8">
+        <div className="max-w-3xl">
           <h1
             style={step(0)}
             className="rise max-w-[14ch] text-5xl leading-[1.02] font-medium tracking-[-0.035em] text-balance sm:text-6xl lg:text-7xl"
@@ -44,10 +68,11 @@ export function Hero() {
             </a>
           </div>
         </div>
+      </div>
 
-        <div className="mx-auto w-full max-w-[300px] sm:max-w-[360px] lg:col-span-5 lg:max-w-[420px]">
-          <FloatingKey />
-        </div>
+      <div style={step(4)} className="rise pb-8">
+        <h2 className="sr-only">Who we serve</h2>
+        <ClientMarquee />
       </div>
     </section>
   );

@@ -333,3 +333,13 @@
     0 0 36px -10px oklch(0.86 0.165 88 / 16%),
     0 0 140px -30px oklch(0.86 0.165 88 / 22%);
 }
+
+/* Stand-in for the hero film: a very slow push across the still. */
+@keyframes hero-drift {
+  from {
+    transform: scale(1.04) translate3d(0, 0, 0);
+  }
+  to {
+    transform: scale(1.14) translate3d(-2.5%, -1.5%, 0);
+  }
+}
